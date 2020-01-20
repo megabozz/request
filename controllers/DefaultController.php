@@ -7,8 +7,15 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+
+use yii\helpers\ArrayHelper;
+
 use app\models\LoginForm;
 use app\models\ContactForm;
+
+use app\models\RequestType;
+use app\models\RequestPriority;
+
 
 class DefaultController extends Controller
 {
@@ -61,7 +68,17 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $request = new \app\models\Request(['scenario' => 'create']);
+        $requestContact = new \app\models\RequestContact(['scenario' => 'create']);
+        $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->asArray()->all(), 'id', 'name');
+        $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->asArray()->all(), 'id', 'name');        
+        
+        return $this->render('request_index', [
+            'request' => $request,
+            'requestContact' => $requestContact,
+            'requestTypes' => $requestTypes,
+            'requestPriorities' => $requestPriorities,
+        ]);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Application requirement checker script.
  *
@@ -9,7 +10,6 @@
  * If you are using Linux you can create a hard link instead, using the following command:
  * ln ../requirements.php requirements.php
  */
-
 // you may need to adjust this path to the correct Yii framework path
 // uncomment and adjust the following line if Yii is not located at the default path
 //$frameworkPath = dirname(__FILE__) . '/vendor/yiisoft/yii2';
@@ -30,9 +30,9 @@ if (!isset($frameworkPath)) {
 
 if (!isset($frameworkPath) || !is_dir($frameworkPath)) {
     $message = "<h1>Error</h1>\n\n"
-        . "<p><strong>The path to yii framework seems to be incorrect.</strong></p>\n"
-        . '<p>You need to install Yii framework via composer or adjust the framework path in file <abbr title="' . __FILE__ . '">' . basename(__FILE__) . "</abbr>.</p>\n"
-        . '<p>Please refer to the <abbr title="' . dirname(__FILE__) . "/README.md\">README</abbr> on how to install Yii.</p>\n";
+            . "<p><strong>The path to yii framework seems to be incorrect.</strong></p>\n"
+            . '<p>You need to install Yii framework via composer or adjust the framework path in file <abbr title="' . __FILE__ . '">' . basename(__FILE__) . "</abbr>.</p>\n"
+            . '<p>Please refer to the <abbr title="' . dirname(__FILE__) . "/README.md\">README</abbr> on how to install Yii.</p>\n";
 
     if (!empty($_SERVER['argv'])) {
         // do not print HTML when used in console mode

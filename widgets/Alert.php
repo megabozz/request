@@ -1,4 +1,5 @@
 <?php
+
 namespace app\widgets;
 
 use Yii;
@@ -24,6 +25,7 @@ use Yii;
  */
 class Alert extends \yii\bootstrap\Widget
 {
+
     /**
      * @var array the alert types configuration for the flash messages.
      * This array is setup as $key => $value, where:
@@ -31,18 +33,18 @@ class Alert extends \yii\bootstrap\Widget
      * - value: the bootstrap alert type (i.e. danger, success, info, warning)
      */
     public $alertTypes = [
-        'error'   => 'alert-danger',
-        'danger'  => 'alert-danger',
+        'error' => 'alert-danger',
+        'danger' => 'alert-danger',
         'success' => 'alert-success',
-        'info'    => 'alert-info',
+        'info' => 'alert-info',
         'warning' => 'alert-warning'
     ];
+
     /**
      * @var array the options for rendering the close button tag.
      * Array will be passed to [[\yii\bootstrap\Alert::closeButton]].
      */
     public $closeButton = [];
-
 
     /**
      * {@inheritdoc}
@@ -72,4 +74,5 @@ class Alert extends \yii\bootstrap\Widget
             $session->removeFlash($type);
         }
     }
+
 }

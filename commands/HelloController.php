@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -20,6 +21,7 @@ use yii\console\ExitCode;
  */
 class HelloController extends Controller
 {
+
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
@@ -31,4 +33,5 @@ class HelloController extends Controller
 
         return ExitCode::OK;
     }
+
 }

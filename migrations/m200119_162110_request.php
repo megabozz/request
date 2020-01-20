@@ -119,19 +119,20 @@ class m200119_162110_request extends Migration
         $this->createTable(self::$table_user, [
             'id' => $this->primaryKey(),
             'name' => $this->string(150)->notNull(),
-            'login' => $this->string(32)->notNull(),
+            'username' => $this->string(32)->notNull(),
             'password' => $this->string(128)->notNull(),
+            'authkey' => $this->string(128)->null(),
+            'accesstoken' => $this->string(128)->null(),
             'disabled' => $this->boolean()->defaultValue(false),
         ]);
         
         $this->createIndex('IX_disabled', self::$table_user, 'disabled');
 
-        $s = password_hash('password1', PASSWORD_BCRYPT, ['cost' => 4]);
+//        $s = password_hash('password1', PASSWORD_BCRYPT, ['cost' => 4]);
         
-        
-        $this->insert(self::$table_user, ['name' => 'USER-1', 'login' => 'user1', 'password' => \app\helpers\Crypt::passwordHash('passuser1')]);
-        $this->insert(self::$table_user, ['name' => 'USER-2', 'login' => 'user2', 'password' => \app\helpers\Crypt::passwordHash('passuser2')]);
-        $this->insert(self::$table_user, ['name' => 'USER-3', 'login' => 'user3', 'password' => \app\helpers\Crypt::passwordHash('passuser3')]);
+        $this->insert(self::$table_user, ['name' => 'USER-1', 'username' => 'user1', 'password' => \app\helpers\Crypt::passwordHash('passuser1')]);
+        $this->insert(self::$table_user, ['name' => 'USER-2', 'username' => 'user2', 'password' => \app\helpers\Crypt::passwordHash('passuser2')]);
+        $this->insert(self::$table_user, ['name' => 'USER-3', 'username' => 'user3', 'password' => \app\helpers\Crypt::passwordHash('passuser3')]);
         
         
         
