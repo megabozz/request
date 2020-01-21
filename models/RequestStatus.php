@@ -13,8 +13,14 @@ namespace app\models;
  *
  * @author vgaltsev@OFFICE.INTERTORG
  */
-class RequestStatus extends RequestBase {
+class RequestStatus extends BaseModel
+{
 
+    public function attributeLabels()
+    {
+        return parent::attributeLabels() + [
+            'name' => 'Статус',
+        ];
+    }
 
-    
 }

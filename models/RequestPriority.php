@@ -13,8 +13,14 @@ namespace app\models;
  *
  * @author vgaltsev@OFFICE.INTERTORG
  */
-class RequestPriority extends RequestBase {
+class RequestPriority extends BaseModel
+{
 
+    public function attributeLabels()
+    {
+        return parent::attributeLabels() + [
+            'name' => 'Приоритет',
+        ];
+    }
 
-    
 }

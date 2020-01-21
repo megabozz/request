@@ -13,6 +13,14 @@ namespace app\models;
  *
  * @author vgaltsev@OFFICE.INTERTORG
  */
-class RequestType extends RequestBase {
+class RequestType extends BaseModel
+{
+
+    public function attributeLabels()
+    {
+        return parent::attributeLabels() + [
+            'name' => 'Тип',
+        ];
+    }
 
 }

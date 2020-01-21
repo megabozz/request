@@ -11,11 +11,17 @@ $config = [
     'layout' => 'html_doc',
     'name' => 'REQUESTS',
     'language' => 'ru-RU',
-    'defaultRoute' => 'default/index',
+    'defaultRoute' => 'request/create',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module',
+        ],
+    ],
+    
     'components' => [
         'i18n' => [
             'translations' => [
