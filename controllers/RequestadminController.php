@@ -58,24 +58,33 @@ class RequestadminController extends ControllerDefault
     {
         $modelRequest = new Request(['scenario' => 'search']);
         $modelRequest->load(Yii::$app->request->get(), $modelRequest->formName());
-        $modelRequestAttributes = [];
-        foreach ($modelRequest->attributes as $k => $v) {
-            $k = $modelRequest->formName() . '.' . $k;
-            $modelRequestAttributes[$k] = $v;
-        }
-        
-        
-        $queryRequest = $modelRequest->find()
-                ->alias($modelRequest->formName())
-                ->joinWith(['requestContact contact'])
+//        $modelRequestAttributes = [];
+//        foreach ($modelRequest->attributes as $k => $v) {
+//            $k = $modelRequest->formName() . '.' . $k;
+//            $modelRequestAttributes[$k] = $v;
+//        }
+//        $queryRequest = $modelRequest->find()
+//                ->alias($modelRequest->formName())
+//                ->joinWith(['requestContact contact'])
 //                ->joinWith(['requestType type'])
-//                ->andFilterCompare($modelRequestAttributes)
-        ;
+////                ->andFilterCompare($modelRequestAttributes)
+//        ;
 
+//        if(Yii::$app->request->isPjax){
+//        return $this->renderAjax($this->action->id, [
+//                    'params' => [
+//                        'modelRequest' => $modelRequest,
+////                        'queryRequest' => $queryRequest,
+//                    ],
+//        ]);
+//            
+//        }
+        
+        
         return $this->render($this->action->id, [
                     'params' => [
                         'modelRequest' => $modelRequest,
-                        'queryRequest' => $queryRequest,
+//                        'queryRequest' => $queryRequest,
                     ],
         ]);
     }

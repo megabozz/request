@@ -15,6 +15,7 @@ namespace app\models;
  */
 class RequestType extends BaseModel
 {
+    protected static $translate = true;
 
     public function attributeLabels()
     {
@@ -22,5 +23,6 @@ class RequestType extends BaseModel
             'name' => 'Тип',
         ];
     }
+
 
 }

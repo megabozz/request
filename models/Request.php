@@ -8,8 +8,10 @@
 
 namespace app\models;
 
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
+use yii\helpers\Html;
 
 /**
  * Description of Request
@@ -18,6 +20,10 @@ use yii\db\Expression;
  */
 class Request extends BaseModel
 {
+
+    public $requestTypeId;
+    public $requestStatusId;
+    public $requestPriorityId;
 
     public function rules()
     {
@@ -30,20 +36,22 @@ class Request extends BaseModel
                     [['priority_id'], 'exist', 'targetClass' => RequestPriority::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
                     [['description'], 'required', 'on' => ['create']],
                     [['created_at'], 'default', 'value' => new Expression('datetime("now")'), 'on' => ['create']],
-                    [['status_id'], 'default', 'value' => Request::find()->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
+                    [['status_id'], 'default', 'value' => RequestStatus::find()->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
                     [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
                     [[
-                        'name', 
-                        'requestStatus.name',
-                        'requestType.name',
-                        'requestPriority.name',
-                        'created_at',
-                    ], 'safe', 'on' => ['grid']],
-            
-                    [['name'], 'safe', 'on' => ['search']],
-//                    [['requestType.name'], 'safe', 'on' => ['search']],
-                    [['created_at'], 'date', 'on' => ['search']],
-            
+                    'name',
+                    'requestStatus.name',
+                    'requestType.name',
+                    'requestPriority.name',
+                    'created_at',
+                        ], 'safe', 'on' => ['grid']],
+                    [[
+                    'name',
+                    'created_at',
+                    'requestTypeId',
+                    'requestStatusId',
+                    'requestPriorityId',
+                        ], 'safe', 'on' => ['search']],
         ]);
     }
 
@@ -68,28 +76,78 @@ class Request extends BaseModel
     {
         return $this->hasOne(RequestStatus::className(), ['id' => 'status_id']);
     }
+
     public function getRequestType()
     {
         return $this->hasOne(RequestType::className(), ['id' => 'type_id']);
     }
+
     public function getRequestPriority()
     {
         return $this->hasOne(RequestPriority::className(), ['id' => 'priority_id']);
     }
-    
-    
-    
-    public function getFilter($attr)
+
+//    public function getRequestTypeId()
+//    {
+//        return $this->requestTypeId;
+//    }
+//
+//    public function setRequestTypeId($v)
+//    {
+//        $this->requestTypeId = $v;
+//    }
+
+    public function search(ActiveQuery $query = null)
     {
-        $f = parent::getFilter($attr);
-        if($f == 'created_at'){
-//            return kartik\wi;
-        }
-        if($f == 'requestType.name'){
-            return ArrayHelper::map(RequestType::find()->all(), 'id', 'name');
-        }
+        $dp = parent::search($query);
+//        $q = new ActiveQuery;
+        $q = $dp->query;
+        $q->alias('request');
+        $q->joinWith(['requestType type']);
+        $q->joinWith(['requestStatus status']);
+        $q->joinWith(['requestPriority priority']);
+
+        $q->andFilterWhere(['type.id' => $this->requestTypeId]);
+        $q->andFilterWhere(['status.id' => $this->requestStatusId]);
+        $q->andFilterWhere(['priority.id' => $this->requestPriorityId]);
+        $q->andfilterWhere(['like', 'request.name', $this->name]);
+
+        $dp->sort->attributes['requestStatus.name'] = [
+            'asc' => [  'status.name' => SORT_ASC],
+            'desc' => [ 'status.name' => SORT_DESC],
+        ];
+        $dp->sort->attributes['requestType.name'] = [
+            'asc' =>  [ 'type.name' => SORT_ASC],
+            'desc' => [ 'type.name' => SORT_DESC],
+        ];
+        $dp->sort->attributes['requestPriority.name'] = [
+            'asc' =>  [ 'priority.name' => SORT_ASC],
+            'desc' => [ 'priority.name' => SORT_DESC],
+        ];
         
         
+
+
+        return $dp;
+    }
+
+    public function getFormFilters()
+    {
+        $f = parent::getFormFilters() + [
+            'name' => true,
+            'requestType.name' => Html::activeDropDownList($this, 'requestTypeId', ArrayHelper::map(RequestType::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+            'requestStatus.name' => Html::activeDropDownList($this, 'requestStatusId', ArrayHelper::map(RequestStatus::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+            'requestPriority.name' => Html::activeDropDownList($this, 'requestPriorityId', ArrayHelper::map(RequestPriority::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+        ];
+
+//        if($f == 'created_at'){
+////            return kartik\wi;
+//        }
+//        if($f == 'requestType.name'){
+//            return ArrayHelper::map(RequestType::find()->all(), 'id', 'name');
+//        }
+
+
         return $f;
     }
 

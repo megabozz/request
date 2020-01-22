@@ -23,6 +23,11 @@ $form = ActiveForm::begin([
     </div>
 <?php endif ?>
 
+<?php if (Yii::$app->session->getFlash('result')):?>
+    <div class="alert alert-info">
+        Данные сохранены.
+    </div>
+<?php endif ?>
 
 
             <fieldset>

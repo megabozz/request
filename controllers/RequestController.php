@@ -86,16 +86,19 @@ class RequestController extends ControllerDefault
 
                     $t->commit();
 
+                    Yii::$app->session->setFlash("result", true);
+                    
                     return $this->redirect(\yii\helpers\Url::to('.'));
                 } catch (\Exception $e) {
                     $t->rollback();
                     $error = $e->getMessage();
                 }
             }
+            
         }
-
-        $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->asArray()->all(), 'id', 'name');
-        $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->asArray()->all(), 'id', 'name');
+        
+        $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->all(), 'id', 'name');
+        $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->all(), 'id', 'name');
 
         return $this->render('request_index', [
                     'error' => $error,

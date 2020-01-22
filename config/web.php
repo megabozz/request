@@ -25,7 +25,7 @@ $config = [
     'components' => [
         'i18n' => [
             'translations' => [
-                'app*' => [
+                'app.' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@app/messages',
                     'sourceLanguage' => 'en-US',
@@ -33,6 +33,11 @@ $config = [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
                     ],
+                ],
+                'app.models.*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'en-US',
                 ],
             ],
         ],

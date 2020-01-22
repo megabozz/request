@@ -8,20 +8,18 @@
 
 namespace app\models;
 
+use yii\base\Model;
+
 /**
- * Description of RequestType
+ * Description of RequestForm
  *
  * @author vgaltsev@OFFICE.INTERTORG
  */
-class RequestStatus extends BaseModel
+class RequestForm extends Model
 {
-    protected static $translate = true;
+    
 
-    public function attributeLabels()
-    {
-        return parent::attributeLabels() + [
-            'name' => 'Статус',
-        ];
-    }
+    
 
+    
 }
