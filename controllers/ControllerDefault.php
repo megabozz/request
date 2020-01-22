@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use Yii;
+use app\models\LoginForm;
 
 class ControllerDefault extends Controller
 {
@@ -24,5 +26,6 @@ class ControllerDefault extends Controller
             ],
         ];
     }
+    
 
 }

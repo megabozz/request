@@ -8,12 +8,12 @@ use yii\db\Migration;
 class m200119_162110_request extends Migration
 {
 
-    static $table_request_contact = "{{%request_contact}}";
-    static $table_request_priority = "{{%request_priority}}";
-    static $table_request_type = "{{%request_type}}";
-    static $table_request_status = "{{%request_status}}";
-    static $table_request = "{{%request}}";
-    static $table_user = "{{%user}}";
+    private static $table_request_contact = "{{%request_contact}}";
+    private static $table_request_priority = "{{%request_priority}}";
+    private static $table_request_type = "{{%request_type}}";
+    private static $table_request_status = "{{%request_status}}";
+    private static $table_request = "{{%request}}";
+    private static $table_user = "{{%user}}";
 
 
     private function manageRequest(bool $delete = false)
@@ -94,7 +94,7 @@ class m200119_162110_request extends Migration
         $this->insert(self::$table_request_status, ["name" => "INPROGRESS"]);
         $this->insert(self::$table_request_status, ["name" => "COMPLETED"]);
         $this->insert(self::$table_request_status, ["name" => "DELAYED"]);
-        $this->insert(self::$table_request_status, ["name" => "DECIDED"]);
+        $this->insert(self::$table_request_status, ["name" => "SOLVED"]);
     }
 
     private function manageRequestContact(bool $delete = false){
@@ -127,6 +127,7 @@ class m200119_162110_request extends Migration
         ]);
         
         $this->createIndex('IX_disabled', self::$table_user, 'disabled');
+        $this->createIndex('IX_username', self::$table_user, 'username');
 
 //        $s = password_hash('password1', PASSWORD_BCRYPT, ['cost' => 4]);
         

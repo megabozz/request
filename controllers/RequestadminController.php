@@ -11,34 +11,30 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-//use yii\web\Controller;
-use yii\web\Response;
 use yii\helpers\ArrayHelper;
-//use app\models\LoginForm;
-//use app\models\ContactForm;
-use kartik\form\ActiveForm;
 use app\models\Request;
-use app\models\RequestContact;
-use app\models\RequestType;
-use app\models\RequestPriority;
 
-/**
- * Description of RequestController
- *
- * @author vgaltsev@OFFICE.INTERTORG
- */
 class RequestadminController extends ControllerDefault
 {
 
+    public function init()
+    {
+        Yii::$app->user->loginUrl = $this->uniqueId . '/login';
+        parent::init();
+    }
+    
     public function behaviors()
     {
         $b = ArrayHelper::merge(parent::behaviors(), [
                     'access' => [
                         'class' => AccessControl::className(),
-                        'only' => ['logout'],
+                        'except' => [
+                            'login'
+                        ],
+//                        'only' => ['logout'],
                         'rules' => [
                             [
-                                'actions' => ['index'],
+                                'actions' => ['index', 'logout'],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
@@ -58,35 +54,43 @@ class RequestadminController extends ControllerDefault
     {
         $modelRequest = new Request(['scenario' => 'search']);
         $modelRequest->load(Yii::$app->request->get(), $modelRequest->formName());
-//        $modelRequestAttributes = [];
-//        foreach ($modelRequest->attributes as $k => $v) {
-//            $k = $modelRequest->formName() . '.' . $k;
-//            $modelRequestAttributes[$k] = $v;
-//        }
-//        $queryRequest = $modelRequest->find()
-//                ->alias($modelRequest->formName())
-//                ->joinWith(['requestContact contact'])
-//                ->joinWith(['requestType type'])
-////                ->andFilterCompare($modelRequestAttributes)
-//        ;
 
-//        if(Yii::$app->request->isPjax){
-//        return $this->renderAjax($this->action->id, [
-//                    'params' => [
-//                        'modelRequest' => $modelRequest,
-////                        'queryRequest' => $queryRequest,
-//                    ],
-//        ]);
-//            
-//        }
-        
-        
         return $this->render($this->action->id, [
                     'params' => [
                         'modelRequest' => $modelRequest,
-//                        'queryRequest' => $queryRequest,
                     ],
         ]);
     }
+    
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goBack();
+        }
+
+        $model = new \app\models\LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('/default/login', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+    
+    
 
 }

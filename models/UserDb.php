@@ -10,7 +10,7 @@ class UserDb extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     public static function tableName() {
-        return '%{{user}}';
+        return '{{%user}}';
     }
     
     /**

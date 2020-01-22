@@ -36,7 +36,7 @@ class Request extends BaseModel
                     [['priority_id'], 'exist', 'targetClass' => RequestPriority::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
                     [['description'], 'required', 'on' => ['create']],
                     [['created_at'], 'default', 'value' => new Expression('datetime("now")'), 'on' => ['create']],
-                    [['status_id'], 'default', 'value' => RequestStatus::find()->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
+                    [['status_id'], 'default', 'value' => RequestStatus::find()->cache(Yii::$app->params['CACHE_TIME'])->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
                     [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
                     [[
                     'name',
@@ -113,19 +113,19 @@ class Request extends BaseModel
         $q->andfilterWhere(['like', 'request.name', $this->name]);
 
         $dp->sort->attributes['requestStatus.name'] = [
-            'asc' => [  'status.name' => SORT_ASC],
-            'desc' => [ 'status.name' => SORT_DESC],
+            'asc' => ['status.name' => SORT_ASC],
+            'desc' => ['status.name' => SORT_DESC],
         ];
         $dp->sort->attributes['requestType.name'] = [
-            'asc' =>  [ 'type.name' => SORT_ASC],
-            'desc' => [ 'type.name' => SORT_DESC],
+            'asc' => ['type.name' => SORT_ASC],
+            'desc' => ['type.name' => SORT_DESC],
         ];
         $dp->sort->attributes['requestPriority.name'] = [
-            'asc' =>  [ 'priority.name' => SORT_ASC],
-            'desc' => [ 'priority.name' => SORT_DESC],
+            'asc' => ['priority.name' => SORT_ASC],
+            'desc' => ['priority.name' => SORT_DESC],
         ];
-        
-        
+
+
 
 
         return $dp;
@@ -135,9 +135,12 @@ class Request extends BaseModel
     {
         $f = parent::getFormFilters() + [
             'name' => true,
-            'requestType.name' => Html::activeDropDownList($this, 'requestTypeId', ArrayHelper::map(RequestType::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
-            'requestStatus.name' => Html::activeDropDownList($this, 'requestStatusId', ArrayHelper::map(RequestStatus::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
-            'requestPriority.name' => Html::activeDropDownList($this, 'requestPriorityId', ArrayHelper::map(RequestPriority::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+            'requestType.name' => Html::activeDropDownList($this, 'requestTypeId', ArrayHelper::map(RequestType::find()->cache(Yii::$app->params['CACHE_TIME'])
+                                    ->select(['id', 'name'])->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+            'requestStatus.name' => Html::activeDropDownList($this, 'requestStatusId', ArrayHelper::map(RequestStatus::find()->cache(Yii::$app->params['CACHE_TIME'])
+                                    ->select(['id', 'name'])->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
+            'requestPriority.name' => Html::activeDropDownList($this, 'requestPriorityId', ArrayHelper::map(RequestPriority::find()->cache(Yii::$app->params['CACHE_TIME'])
+                                    ->select(['id', 'name'])->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
         ];
 
 //        if($f == 'created_at'){

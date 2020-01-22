@@ -11,7 +11,7 @@ $config = [
     'layout' => 'html_doc',
     'name' => 'REQUESTS',
     'language' => 'ru-RU',
-    'defaultRoute' => 'request/create',
+    'defaultRoute' => 'request',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -51,6 +51,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\UserDb',
             'enableAutoLogin' => true,
+            'loginUrl' => '/requestadmin/login'
         ],
         'errorHandler' => [
             'errorAction' => 'default/error',

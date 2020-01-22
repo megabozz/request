@@ -52,19 +52,19 @@ class RequestController extends ControllerDefault
 
         if (\Yii::$app->request->isPost) {
 
-            $checkFormResult = true;
-            $checkFormResult &= $request->load(Yii::$app->request->post(), $request->formName());
-            $checkFormResult &= $requestContact->load(Yii::$app->request->post(), $requestContact->formName());
+            $validateResult = true;
+            $validateResult &= $request->load(Yii::$app->request->post(), $request->formName());
+            $validateResult &= $requestContact->load(Yii::$app->request->post(), $requestContact->formName());
 
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($request) + ActiveForm::validate($requestContact);
             }
 
-            $checkFormResult &= $request->validate();
-            $checkFormResult &= $requestContact->validate();
+            $validateResult &= $request->validate();
+            $validateResult &= $requestContact->validate();
 
-            if ($checkFormResult) {
+            if ($validateResult) {
 
                 $t = Yii::$app->db_request->beginTransaction();
 
@@ -97,8 +97,8 @@ class RequestController extends ControllerDefault
             
         }
         
-        $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->all(), 'id', 'name');
-        $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->all(), 'id', 'name');
+        $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->cache(Yii::$app->params['CACHE_TIME'])->all(), 'id', 'name');
+        $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->cache(Yii::$app->params['CACHE_TIME'])->all(), 'id', 'name');
 
         return $this->render('request_index', [
                     'error' => $error,

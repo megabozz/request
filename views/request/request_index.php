@@ -5,7 +5,7 @@
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use yii\widgets\MaskedInput;
-use yii\helpers\ArrayHelper;
+//use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 $form = ActiveForm::begin([
@@ -31,7 +31,7 @@ $form = ActiveForm::begin([
 
 
             <fieldset>
-                <legend>Данные заявки</legend>
+                <legend><?= Yii::t('app', 'REQUESTS')?></legend>
                 <div class="input-group-addon">
                     <?php
                     echo Form::widget([
@@ -40,7 +40,7 @@ $form = ActiveForm::begin([
                         'columns' => 1,
                         'compactGrid' => true,
                         'attributes' => [
-                            'name' => ['type' => Form::INPUT_TEXT]
+                            'name' => ['type' => Form::INPUT_TEXT, 'options' => ['autofocus' => true]],
                         ],
                     ]);
                     echo Form::widget([
@@ -68,7 +68,7 @@ $form = ActiveForm::begin([
 
 
             <fieldset>
-                <legend>Данные заявителя</legend>
+                <legend><?= Yii::t('app', 'DECLARANT')?></legend>
                 <div class="input-group-addon">
                     <?php
                     echo Form::widget([

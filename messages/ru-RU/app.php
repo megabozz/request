@@ -8,5 +8,6 @@
 
 return [
     'REQUESTS' => 'ЗАЯВКИ',
+    'DECLARANT' => 'ЗАЯВИТЕЛЬ',
     
 ];
