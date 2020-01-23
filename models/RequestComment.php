@@ -38,7 +38,8 @@ class RequestComment extends BaseModel
     public function attributeLabels()
     {
         return parent::attributeLabels() + [
-            'description' => 'Комментарий',
+            'description' => Yii::t('app','Comment'),
+            'createdBy.name' => Yii::t('app','Creator'),
         ];
     }
 

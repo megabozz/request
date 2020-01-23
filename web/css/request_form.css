@@ -1,7 +1,11 @@
 
+
 #RequestForm {
     margin: auto;
     max-width: 50em;
+}
+#RequestForm .form-group {
+    margin-bottom: 0.1em;
 }
 
 #RequestForm #request-description

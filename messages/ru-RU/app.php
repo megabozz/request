@@ -15,4 +15,7 @@ return [
     'Home' => 'Главная',
     'Requests' => 'Заявки',
     'Admin requests' => 'Администрирование заявок',
+    'Creator' => 'Автор',
+    'Comment' => 'Комментарий',
+    'Date creation' => 'Дата создания',
 ];

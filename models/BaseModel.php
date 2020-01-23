@@ -22,6 +22,13 @@ class BaseModel extends ActiveRecord
         ];
     }
 
+    public function attributeLabels()
+    {
+        return parent::attributeLabels() + [
+            'created_at' => Yii::t('app','Date creation'),
+        ];
+    }
+    
     public function getFormColumns(string $scenario)
     {
         $old_scenario = $this->scenario;

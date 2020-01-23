@@ -19,8 +19,8 @@ class Request extends BaseModel
     {
         return ArrayHelper::merge(parent::rules(), [
                     [['name', 'description'], 'trim', 'on' => ['create']],
-                    [['name'], 'required', 'on' => ['create', 'update']],
-                    [['name'], 'string', 'min' => 5, 'on' => ['create', 'update']],
+                    [['name'], 'required', 'on' => ['create']],
+                    [['name'], 'string', 'min' => 5, 'on' => ['create']],
                     [['type_id'], 'required', 'on' => ['create', 'update']],
                     [['type_id'], 'exist', 'targetClass' => RequestType::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
                     [['priority_id'], 'required', 'on' => ['create', 'update']],
@@ -32,6 +32,16 @@ class Request extends BaseModel
                     [['status_id'], 'default', 'value' => RequestStatus::find()->cache(Yii::$app->params['CACHE_TIME'])->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
                     [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
                     [['status_id'], 'integer', 'on' => ['update']],
+                    [['work_time_estimated'], 'filter', 'filter' => function($v) {
+                            if (!is_array($v)) {
+                                $v1 = explode(":", preg_replace('/[^0-9\:]/', "", $v));
+                                if (count($v1) == 2) {
+                                    return $v1[0] * 60 + $v1[1];
+                                }
+                            }
+                            return $v;
+                        }, 'on' => ['update']],
+                    [['work_time_estimated'], 'integer', 'on' => ['update']],
                     [[
                     'name',
                     'requestStatus.name',
@@ -49,6 +59,17 @@ class Request extends BaseModel
         ]);
     }
 
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $v = $this->work_time_estimated;
+        if (is_numeric($v)) {
+            $v = sprintf("%02d:%02d", $v / 60, $v % 60);
+        }
+        $this->work_time_estimated = $v;
+    }
+
     public function attributeLabels()
     {
         return parent::attributeLabels() + [
@@ -58,6 +79,7 @@ class Request extends BaseModel
             'priority_id' => 'Приоритет',
             'status_id' => 'Статус',
             'created_at' => 'Дата создания',
+            'work_time_estimated' => 'Время обработки',
         ];
     }
 

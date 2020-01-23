@@ -25,7 +25,7 @@ $form = ActiveForm::begin([
 <?php endif ?>
 
 <?php if (Yii::$app->session->getFlash('result')): ?>
-    <div class="alert alert-info"><?= Yii::t('app', 'Request saved')?></div>
+    <div class="alert alert-info"><?= Yii::t('app', 'Request saved') ?></div>
 <?php endif ?>
 
 

@@ -3,7 +3,6 @@
 /* @var $requestContact \app\models\RequestContact */
 
 use kartik\form\ActiveForm;
-use kartik\builder\FormGrid;
 use kartik\builder\Form;
 use yii\widgets\MaskedInput;
 use yii\helpers\Html;
@@ -26,48 +25,30 @@ extract($params);
         <fieldset>
             <legend><?= Yii::t('app', 'REQUEST') ?></legend>
             <?php
-            echo FormGrid::widget([
+            echo Form::widget([
                 'model' => $modelRequest->requestContact,
                 'form' => $form,
-                'rows' => [
-                    [
-                        'attributes' => [
-                            'name' => ['type' => Form::INPUT_STATIC],
-                        ],
-                    ],
-                    [
-                        'attributes' => [
-                            'phone' => ['type' => Form::INPUT_STATIC],
-                            'email' => ['type' => Form::INPUT_STATIC],
-                        ],
-                    ],
+                'columns' => 1,
+                'encloseFieldSet' => true,
+                'attributes' => [
+                    'name' => ['type' => Form::INPUT_STATIC],
+                    'phone' => ['type' => Form::INPUT_STATIC],
+                    'email' => ['type' => Form::INPUT_STATIC],
                 ],
             ]);
             ?>
 
             <?php
-            echo FormGrid::widget([
+            echo Form::widget([
                 'model' => $modelRequest,
                 'form' => $form,
-                'rows' => [
-                    [
-                        'attributes' => [
-                            'name' => ['type' => Form::INPUT_STATIC],
-                        ],
-                    ],
-                    [
-                        'attributes' => [
-                            'type_id' => ['type' => Form::INPUT_DROPDOWN_LIST, 'items' => $requestTypes],
-                            'priority_id' => ['type' => Form::INPUT_DROPDOWN_LIST, 'items' => $requestPriorities],
-                        ],
-                    ],
-                    [
-                        'encloseFieldSet' => true,
-                        'attributes' => [
-                            'description' => ['type' => Form::INPUT_STATIC],
-                        ],
-                    ],
-                ]
+                'encloseFieldSet' => true,
+                'attributes' => [
+                    'name' => ['type' => Form::INPUT_STATIC],
+                    'type_id' => ['type' => Form::INPUT_DROPDOWN_LIST, 'items' => $requestTypes, 'options' => ['style' => 'width:20em;'],],
+                    'priority_id' => ['type' => Form::INPUT_DROPDOWN_LIST, 'items' => $requestPriorities, 'options' => ['style' => 'width:20em;'],],
+                    'description' => ['type' => Form::INPUT_STATIC],
+                ],
             ]);
             ?>
 
@@ -77,8 +58,23 @@ extract($params);
                 echo Form::widget([
                     'model' => $modelRequest,
                     'form' => $form,
+                    'columns' => 1,
                     'attributes' => [
-                        'status_id' => ['type' => Form::INPUT_DROPDOWN_LIST, 'items' => $requestStatuses],
+                        'status_id' => [
+                            'type' => Form::INPUT_DROPDOWN_LIST,
+                            'items' => $requestStatuses,
+                            'options' => ['style' => 'width:10em;'],
+                        ],
+                        'work_time_estimated' => [
+                            'type' => Form::INPUT_WIDGET,
+                            'widgetClass' => MaskedInput::className(),
+                            'options' => [
+                                'options' => [
+                                    'style' => 'width:5em;',
+                                ],
+                                'mask' => '99:99',
+                            ],
+                        ],
                     ],
                 ]);
                 ?>
