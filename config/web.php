@@ -17,11 +17,10 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'modules' => [
-        'gridview' =>  [
+        'gridview' => [
             'class' => '\kartik\grid\Module',
         ],
     ],
-    
     'components' => [
         'i18n' => [
             'translations' => [

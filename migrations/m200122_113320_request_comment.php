@@ -24,11 +24,11 @@ class m200122_113320_request_comment extends Migration
             'created_by' => $this->integer()->notNull(),
             'FOREIGN KEY (request_id) REFERENCES {{%request}} (id)',
         ]);
-        
+
         $this->createIndex('IX_request_id', self::$table_request_comment, 'request_id');
         $this->createIndex('IX_created_by', self::$table_request_comment, 'created_by');
     }
-    
+
     /**
      * {@inheritdoc}
      */

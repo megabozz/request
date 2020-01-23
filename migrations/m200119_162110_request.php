@@ -15,7 +15,6 @@ class m200119_162110_request extends Migration
     private static $table_request = "{{%request}}";
     private static $table_user = "{{%user}}";
 
-
     private function manageRequest(bool $delete = false)
     {
         if ($delete) {
@@ -45,6 +44,7 @@ class m200119_162110_request extends Migration
         $this->createIndex('IX_priority_id', self::$table_request, 'priority_id');
         $this->createIndex('IX_status_id', self::$table_request, 'status_id');
         $this->createIndex('IX_contact_id', self::$table_request, 'contact_id');
+        $this->createIndex('IX_created_at', self::$table_request, 'created_at');
     }
 
     private function manageRequestType(bool $delete = false)
@@ -97,8 +97,9 @@ class m200119_162110_request extends Migration
         $this->insert(self::$table_request_status, ["name" => "SOLVED"]);
     }
 
-    private function manageRequestContact(bool $delete = false){
-        if($delete){
+    private function manageRequestContact(bool $delete = false)
+    {
+        if ($delete) {
             $this->dropTable(self::$table_request_contact);
             return;
         }
@@ -108,11 +109,11 @@ class m200119_162110_request extends Migration
             'phone' => $this->string(20)->null(),
             'email' => $this->string(50)->null(),
         ]);
-        
     }
 
-    private function manageUser(bool $delete = false){
-        if($delete){
+    private function manageUser(bool $delete = false)
+    {
+        if ($delete) {
             $this->dropTable(self::$table_user);
             return;
         }
@@ -125,22 +126,15 @@ class m200119_162110_request extends Migration
             'accesstoken' => $this->string(128)->null(),
             'disabled' => $this->boolean()->defaultValue(false),
         ]);
-        
+
         $this->createIndex('IX_disabled', self::$table_user, 'disabled');
         $this->createIndex('IX_username', self::$table_user, 'username');
 
-//        $s = password_hash('password1', PASSWORD_BCRYPT, ['cost' => 4]);
-        
         $this->insert(self::$table_user, ['name' => 'USER-1', 'username' => 'user1', 'password' => \app\helpers\Crypt::passwordHash('passuser1')]);
         $this->insert(self::$table_user, ['name' => 'USER-2', 'username' => 'user2', 'password' => \app\helpers\Crypt::passwordHash('passuser2')]);
         $this->insert(self::$table_user, ['name' => 'USER-3', 'username' => 'user3', 'password' => \app\helpers\Crypt::passwordHash('passuser3')]);
-        
-        
-        
     }
-    
-    
-    
+
     /**
      * {@inheritdoc}
      */

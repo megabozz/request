@@ -1,23 +1,31 @@
 
 #RequestForm {
     margin: auto;
-    max-width: 60em;
+    max-width: 50em;
 }
 
-#RequestForm #request-description {
+#RequestForm #request-description
+{
     min-height: 10em;
 }
 
-#RequestForm fieldset {
+.form-group fieldset
+{
     padding: 0.5em;
     border: #bbb 1px solid;
     border-radius: 1em;
     margin-bottom: 1em;
 }
-#RequestForm fieldset legend {
+.form-group fieldset > legend {
     padding-left: 0.5em;
     padding-right: 0.5em;
     border: #BBB 1px solid;
     border-radius: 1em;
     background: #EEE;
 }
+
+#RequestComments {
+    margin: auto;
+    max-width: 50em;
+}
+

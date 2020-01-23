@@ -1,23 +1,13 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\helpers\Html;
 
-/**
- * Description of Request
- *
- * @author vgaltsev@OFFICE.INTERTORG
- */
 class Request extends BaseModel
 {
 
@@ -30,14 +20,18 @@ class Request extends BaseModel
         return ArrayHelper::merge(parent::rules(), [
                     [['name', 'description'], 'trim', 'on' => ['create']],
                     [['name'], 'required', 'on' => ['create', 'update']],
+                    [['name'], 'string', 'min' => 5, 'on' => ['create', 'update']],
                     [['type_id'], 'required', 'on' => ['create', 'update']],
-                    [['type_id'], 'exist', 'targetClass' => RequestType::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
+                    [['type_id'], 'exist', 'targetClass' => RequestType::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
                     [['priority_id'], 'required', 'on' => ['create', 'update']],
-                    [['priority_id'], 'exist', 'targetClass' => RequestPriority::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
+                    [['priority_id'], 'exist', 'targetClass' => RequestPriority::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
                     [['description'], 'required', 'on' => ['create']],
+                    [['description'], 'string', 'min' => 10, 'on' => ['create']],
                     [['created_at'], 'default', 'value' => new Expression('datetime("now")'), 'on' => ['create']],
+                    [['status_id'], 'required', 'on' => ['update']],
                     [['status_id'], 'default', 'value' => RequestStatus::find()->cache(Yii::$app->params['CACHE_TIME'])->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
-                    [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
+                    [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
+                    [['status_id'], 'integer', 'on' => ['update']],
                     [[
                     'name',
                     'requestStatus.name',
@@ -87,20 +81,14 @@ class Request extends BaseModel
         return $this->hasOne(RequestPriority::className(), ['id' => 'priority_id']);
     }
 
-//    public function getRequestTypeId()
-//    {
-//        return $this->requestTypeId;
-//    }
-//
-//    public function setRequestTypeId($v)
-//    {
-//        $this->requestTypeId = $v;
-//    }
+    public function getRequestComments()
+    {
+        return $this->hasMany(RequestComment::className(), ['request_id' => 'id']);
+    }
 
     public function search(ActiveQuery $query = null)
     {
         $dp = parent::search($query);
-//        $q = new ActiveQuery;
         $q = $dp->query;
         $q->alias('request');
         $q->joinWith(['requestType type']);
@@ -143,15 +131,20 @@ class Request extends BaseModel
                                     ->select(['id', 'name'])->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '']),
         ];
 
-//        if($f == 'created_at'){
-////            return kartik\wi;
-//        }
-//        if($f == 'requestType.name'){
-//            return ArrayHelper::map(RequestType::find()->all(), 'id', 'name');
-//        }
-
-
         return $f;
+    }
+
+    public function getFormColumns(string $scenario)
+    {
+        $c = parent::getFormColumns($scenario);
+
+        $c['actions'] = [
+            'class' => \yii\grid\ActionColumn::className(),
+            'template' => '{view} {update}',
+        ];
+
+
+        return $c;
     }
 
 }

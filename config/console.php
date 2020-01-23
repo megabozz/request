@@ -11,7 +11,7 @@ $config = [
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
     'components' => [
@@ -30,13 +30,13 @@ $config = [
         'db_request' => $db_request,
     ],
     'params' => $params,
-    /*
-    'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
-        ],
-    ],
-    */
+        /*
+          'controllerMap' => [
+          'fixture' => [ // Fixture generation command line.
+          'class' => 'yii\faker\FixtureController',
+          ],
+          ],
+         */
 ];
 
 if (YII_ENV_DEV) {

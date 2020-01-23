@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use yii\web\Controller;
 use Yii;
-use app\models\LoginForm;
 
 class ControllerDefault extends Controller
 {
@@ -26,6 +25,33 @@ class ControllerDefault extends Controller
             ],
         ];
     }
-    
+
+    public function getBreadcrumbs()
+    {
+        return [];
+    }
+
+    public function beforeAction($action)
+    {
+        $b = $this->getBreadcrumbs();
+
+        if ($this->action->id == 'index') {
+            $this->view->params['breadcrumbs'][] = [
+                'label' => Yii::t('app', array_key_exists($this->id, $b) ? $b[$this->id] : $this->id),
+            ];
+        } else {
+
+
+            $this->view->params['breadcrumbs'][] = [
+                'label' => Yii::t('app', array_key_exists($this->id, $b) ? $b[$this->id] : $this->id),
+                'url' => ['/' . $this->id]
+            ];
+            $this->view->params['breadcrumbs'][] = [
+                'label' => Yii::t('app', array_key_exists($this->action->id, $b) ? $b[$this->action->id] : $this->action->id),
+            ];
+        }
+
+        return parent::beforeAction($action);
+    }
 
 }

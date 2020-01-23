@@ -13,12 +13,11 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
+
     public $username;
     public $password;
     public $rememberMe = true;
-
     private $_user = false;
-
 
     public function attributeLabels()
     {
@@ -28,7 +27,7 @@ class LoginForm extends Model
             'rememberMe' => 'Запомнить',
         ];
     }
-    
+
     /**
      * @return array the validation rules.
      */
@@ -70,10 +69,10 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            
+
 //            var_dump(Yii::$app->user);exit;
-            
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 60*60*24 : 0);
+
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 60 * 60 * 24 : 0);
         }
         return false;
     }
@@ -91,4 +90,5 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
 }

@@ -1,41 +1,24 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\controllers;
 
 use Yii;
-//use yii\filters\AccessControl;
-//use yii\web\Controller;
 use yii\web\Response;
-//use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-//use app\models\LoginForm;
-//use app\models\ContactForm;
 use kartik\form\ActiveForm;
 use app\models\Request;
 use app\models\RequestContact;
 use app\models\RequestType;
 use app\models\RequestPriority;
 
-/**
- * Description of RequestController
- *
- * @author vgaltsev@OFFICE.INTERTORG
- */
 class RequestController extends ControllerDefault
 {
 
-    public function behaviors()
+    public function getBreadcrumbs()
     {
-        $b = parent::behaviors();
-
-
-        return $b;
+        return parent::getBreadcrumbs() + [
+            $this->id => Yii::t('app', 'Requests'),
+        ];
     }
 
     public function actionIndex()
@@ -87,25 +70,26 @@ class RequestController extends ControllerDefault
                     $t->commit();
 
                     Yii::$app->session->setFlash("result", true);
-                    
+
                     return $this->redirect(\yii\helpers\Url::to('.'));
                 } catch (\Exception $e) {
                     $t->rollback();
                     $error = $e->getMessage();
                 }
             }
-            
         }
-        
+
         $requestTypes = ArrayHelper::map(['' => ''] + RequestType::find()->cache(Yii::$app->params['CACHE_TIME'])->all(), 'id', 'name');
         $requestPriorities = ArrayHelper::map(['' => ''] + RequestPriority::find()->cache(Yii::$app->params['CACHE_TIME'])->all(), 'id', 'name');
 
         return $this->render('request_index', [
-                    'error' => $error,
-                    'request' => $request,
-                    'requestContact' => $requestContact,
-                    'requestTypes' => $requestTypes,
-                    'requestPriorities' => $requestPriorities,
+                    'params' => [
+                        'error' => $error,
+                        'request' => $request,
+                        'requestContact' => $requestContact,
+                        'requestTypes' => $requestTypes,
+                        'requestPriorities' => $requestPriorities,
+                    ],
         ]);
     }
 
