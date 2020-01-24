@@ -22,6 +22,7 @@ class m200122_113320_request_comment extends Migration
             'description' => $this->text()->notNull(),
             'created_at' => $this->dateTime()->unsigned()->notNull(),
             'created_by' => $this->integer()->notNull(),
+            'work_time_estimated' => $this->integer()->unsigned()->null(),
             'FOREIGN KEY (request_id) REFERENCES {{%request}} (id)',
         ]);
 

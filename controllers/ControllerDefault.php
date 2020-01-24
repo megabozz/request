@@ -7,6 +7,13 @@ use Yii;
 
 class ControllerDefault extends Controller
 {
+    private static $actions = [
+        'index' => 'просмотр',
+        'create' => 'создание',
+        'update' => 'изменение',
+        'view' => 'просмотр',
+    ];
+    
 
     public function behaviors()
     {
@@ -54,4 +61,20 @@ class ControllerDefault extends Controller
         return parent::beforeAction($action);
     }
 
+
+    public function requestLog($request_id, $action_id, $user_id){
+            
+            if(array_key_exists($action_id, self::$actions)){
+            $log = new \app\models\RequestLog(['scenario' => 'create']);
+                $log->attributes = [
+                    'description' => sprintf("%s заявки", self::$actions[$action_id]),
+                    'user_id' => $user_id,
+                    'request_id' => $request_id,
+                ];
+            }
+            $log->save();
+        
+    }
+
+    
 }

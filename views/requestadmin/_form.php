@@ -65,16 +65,16 @@ extract($params);
                             'items' => $requestStatuses,
                             'options' => ['style' => 'width:10em;'],
                         ],
-                        'work_time_estimated' => [
-                            'type' => Form::INPUT_WIDGET,
-                            'widgetClass' => MaskedInput::className(),
-                            'options' => [
-                                'options' => [
-                                    'style' => 'width:5em;',
-                                ],
-                                'mask' => '99:99',
-                            ],
-                        ],
+//                        'work_time_estimated' => [
+//                            'type' => Form::INPUT_WIDGET,
+//                            'widgetClass' => MaskedInput::className(),
+//                            'options' => [
+//                                'options' => [
+//                                    'style' => 'width:5em;',
+//                                ],
+//                                'mask' => '99:99',
+//                            ],
+//                        ],
                     ],
                 ]);
                 ?>

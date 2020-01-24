@@ -54,6 +54,7 @@ class RequestadminController extends ControllerDefault
         return $b;
     }
 
+    
     public function getBreadcrumbs()
     {
         return parent::getBreadcrumbs() + [
@@ -105,6 +106,11 @@ class RequestadminController extends ControllerDefault
 
                 if ($modelRequest->validate()) {
                     $modelRequest->save();
+                    
+//  Логирование действия работы с заявкой
+
+                    $this->requestLog($id, $this->action->id, Yii::$app->user->id);
+                    
                     return $this->redirect(Url::previous());
                 }
             }
@@ -148,6 +154,12 @@ class RequestadminController extends ControllerDefault
             }
         }
 
+        
+        
+//  Логирование действия работы с заявкой
+        
+        $this->requestLog($id, $this->action->id, Yii::$app->user->id);
+        
         return $this->render($this->action->id, [
                     'params' => [
                         'modelRequest' => $modelRequest,

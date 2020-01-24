@@ -32,16 +32,16 @@ class Request extends BaseModel
                     [['status_id'], 'default', 'value' => RequestStatus::find()->cache(Yii::$app->params['CACHE_TIME'])->where(['name' => 'NEW'])->select(['id'])->scalar(), 'on' => ['create']],
                     [['status_id'], 'exist', 'targetClass' => RequestStatus::className(), 'targetAttribute' => 'id', 'skipOnEmpty' => false, 'on' => ['create', 'update']],
                     [['status_id'], 'integer', 'on' => ['update']],
-                    [['work_time_estimated'], 'filter', 'filter' => function($v) {
-                            if (!is_array($v)) {
-                                $v1 = explode(":", preg_replace('/[^0-9\:]/', "", $v));
-                                if (count($v1) == 2) {
-                                    return $v1[0] * 60 + $v1[1];
-                                }
-                            }
-                            return $v;
-                        }, 'on' => ['update']],
-                    [['work_time_estimated'], 'integer', 'on' => ['update']],
+//                    [['work_time_estimated'], 'filter', 'filter' => function($v) {
+//                            if (!is_array($v)) {
+//                                $v1 = explode(":", preg_replace('/[^0-9\:]/', "", $v));
+//                                if (count($v1) == 2) {
+//                                    return $v1[0] * 60 + $v1[1];
+//                                }
+//                            }
+//                            return $v;
+//                        }, 'on' => ['update']],
+//                    [['work_time_estimated'], 'integer', 'on' => ['update']],
                     [[
                     'name',
                     'requestStatus.name',
@@ -59,16 +59,16 @@ class Request extends BaseModel
         ]);
     }
 
-    public function afterFind()
-    {
-        parent::afterFind();
-
-        $v = $this->work_time_estimated;
-        if (is_numeric($v)) {
-            $v = sprintf("%02d:%02d", $v / 60, $v % 60);
-        }
-        $this->work_time_estimated = $v;
-    }
+//    public function afterFind()
+//    {
+//        parent::afterFind();
+//
+//        $v = $this->work_time_estimated;
+//        if (is_numeric($v)) {
+//            $v = sprintf("%02d:%02d", $v / 60, $v % 60);
+//        }
+//        $this->work_time_estimated = $v;
+//    }
 
     public function attributeLabels()
     {
@@ -168,5 +168,6 @@ class Request extends BaseModel
 
         return $c;
     }
-
+    
+    
 }
